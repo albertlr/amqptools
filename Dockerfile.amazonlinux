@@ -1,0 +1,50 @@
+FROM amazonlinux:2
+
+RUN yum -y update \
+ && amazon-linux-extras enable corretto8 \
+ && yum -y install java-1.8.0-amazon-corretto-devel \
+ && yum clean all
+
+RUN yum -y update \
+ && yum -y install git \
+ \
+ && yum -y install python-simplejson \
+        libtool \
+        autoconf \
+        automake \
+        gcc \
+ \
+ && yum -y install libtool \
+ && yum clean all
+
+RUN mkdir /ampqtools
+
+COPY . /ampqtools
+
+# dependencies needed to build rabbitmq-c
+RUN yum -y update \
+    && yum -y install \
+    make \
+    cmake \
+    openssl-devel \
+    && yum clean all
+
+RUN cd /ampqtools \
+   && git clone git://github.com/alanxz/rabbitmq-c.git \
+   && cd rabbitmq-c \
+   && git submodule init \
+   && git submodule update
+    
+RUN cd /ampqtools/rabbitmq-c \
+    && mkdir build \
+    && cd build \
+    && cmake .. \
+    && cmake --build . --target all
+
+RUN cd /ampqtools \
+   && make AMQPTOOLS_RABBITHOME=rabbitmq-c
+
+#    && autoreconf -i \
+#    && ./configure \
+#    && make
+

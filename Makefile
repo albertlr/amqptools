@@ -21,10 +21,10 @@ uninstall:
 	rm -f $(AMQPTOOLS_INSTALLROOT)/amqpsend
 
 amqpspawn: amqpspawn.c
-	gcc -o bin/amqpspawn amqpspawn.c -I$(AMQPTOOLS_RABBITHOME)/librabbitmq $(AMQPTOOLS_RABBITHOME)/librabbitmq/.libs/librabbitmq.so
+	gcc -o bin/amqpspawn amqpspawn.c -I$(AMQPTOOLS_RABBITHOME)/librabbitmq $(AMQPTOOLS_RABBITHOME)/build/librabbitmq/librabbitmq.so
 
 amqpsend: amqpsend.c
-	gcc -o bin/amqpsend amqpsend.c -I$(AMQPTOOLS_RABBITHOME)/librabbitmq $(AMQPTOOLS_RABBITHOME)/librabbitmq/.libs/librabbitmq.so
+	gcc -o bin/amqpsend amqpsend.c -I$(AMQPTOOLS_RABBITHOME)/librabbitmq $(AMQPTOOLS_RABBITHOME)/build/librabbitmq/librabbitmq.so
 
 clean:
 	rm -f bin/amqpsend bin/amqpspawn
